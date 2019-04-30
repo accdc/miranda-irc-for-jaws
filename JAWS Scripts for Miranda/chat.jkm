@@ -1,0 +1,27 @@
+[desktop Keys]
+Alt+1=sayLastMessage
+
+Alt+9=message9
+[Common Keys]
+Alt+2=message2
+Alt+6=message6
+Alt+7=message7
+Alt+8=message8
+Alt+0=message10
+Alt+3=message3
+Alt+4=message4
+Alt+5=message5
+Control+5=message15
+Control+6=message16
+Control+7=message17
+Control+8=message18
+Control+9=message19
+Control+0=message20
+Control+1=message11
+Control+2=message12
+Control+3=message13
+Control+4=message14
+
+
+Shift+JAWSKey+T=TypingAlertOnOff
+Shift+JAWSKey+R=ReadIncomingMessagesOnOff

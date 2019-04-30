@@ -1,0 +1,7 @@
+[options]
+TypingEcho=0
+TypingInterrupt=0
+[OSM]
+IncludeGraphics=1
+[WindowClasses]
+MButtonClass=Button
