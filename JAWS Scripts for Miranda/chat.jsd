@@ -1,103 +1,30 @@
+:function AutoStartEvent
+:SearchRank 1
+
+:function UIA_Edit_PropertyChangedEvent
+:SearchRank 1
+:Param object/element No Description
+:Param string/id No Description
+:Param string/value No Description
+
 :function GetMessageLogWindow
 :Returns string returns the text of the message log window to the calling function
+:SearchRank 1
 :Synopsis gets the text of the message log window
-:Category String
+:Param object/element No Description
 
 :function GetFromLog
 :Returns string returns the requested message to the calling function or script
+:SearchRank 1
 :Synopsis gets the requested message from the internal jaws log
 :Category String
 :Param int/MessageNumber enter the number of the message that you want from the log lowist number mean most recent message. for example 1 will provide the text of the last message recieved. note zero is not a valid number.
 
-:function ReadNewMessage
-:Synopsis reads the new messages as they come in this function is atatched to the new text event
-:Category Say
-:Param handle/hwnd Window handle
+:script ProcessMessageSegment
+:SearchRank 1
+:Synopsis Open the url within the specified message segment.
 
-:function newtextevent
-
-:script sayLastMessage
-:Synopsis Speaks the most recent message in the conversation window.
-:Category Script
-
-:script message2
-:Synopsis Speaks the second most recent message in the conversation window.
-:Category Script
-
-:script message3
-:Synopsis Speaks the third most recent message in the conversation window.
-
-:script message4
-:Synopsis Speaks the fourth most recent message in the conversation window.
-
-:script message5
-:Synopsis Speaks the fifth most recent message in the conversation window.
-
-:script message6
-:Synopsis Speaks the sixth most recent message in the conversation window
-
-:script message7
-:Synopsis Speaks the seventh most recent message in the conversation window
-
-:script message8
-:Synopsis Speaks the eighth most recent message in the conversation window
-
-:script message9
-:Synopsis Speaks the ninth most recent message in the conversation window
-
-:script message10
-:Synopsis Speaks the tenth most recent message in the conversation window
-
-:script message11
-:Synopsis Speaks the  eleventh most recent message in the conversation window
-
-:script message12
-:Synopsis Speaks the  twelvth most recent message in the conversation window
-
-:script message13
-:Synopsis Speaks the  tirteen th most recent message in the conversation window
-
-:script message14
-:Synopsis Speaks the  fourteenth most recent message in the conversation window
-
-:script message15
-:Synopsis Speaks the  fifteenth most recent message in the conversation window
-
-:script message16
-:Synopsis Speaks the  sixteenth most recent message in the conversation window
-
-:script message17
-:Synopsis Speaks the  seventeenth most recent message in the conversation window
-
-:script message18
-:Synopsis Speaks the  eightteenth most recent message in the conversation window
-
-:script message19
-:Synopsis Speaks the  nineteenth most recent message in the conversation window
-
-:script message20
-:Synopsis Speaks the  twentyth most recent message in the conversation window
-
-:function handlecustomwindows
-
-:function ReadTypeingMessages
-:Category Say
-
-:script ReadIncomingMessagesOnOff
-:Synopsis turns the reading of incoming messages on or off
-:Category SpeakingLevel
-
-:function ReadIncomingMessagesIsOn
-:Returns int if read incoming messages is on in the Miranda IM.ini file a value of true is returned
-:Synopsis checks to see if read in comming messages is on in the Miranda IM.ini file
-:Category SpeakingLevel
-
-:function TypeingAlertIsOn
-:Returns int if the typing alert is on in the Miranda IM.ini file a value of true is returned.
-:Synopsis checks to see if typing alert is on in the Miranda IM.ini file.
-:Category SpeakingLevel
-
-:script TypingAlertOnOff
-:Synopsis turns on or off the typing alert
-:Category SpeakingLevel
+:script ToggleMirandaSpeech
+:SearchRank 1
+:Description Toggles between the three modes of speech for screen reader message announcement.
 

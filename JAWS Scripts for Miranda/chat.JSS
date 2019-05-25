@@ -1,150 +1,125 @@
+/*
+JAWS Scripts for the portable Miranda IM  IRC Client
+https://github.com/accdc/miranda-irc-for-jaws
+Rewritten by Bryan Garaventa to utilize UIA Automation for reliable message interactions.
+To enable global message announcement no matter which window has focus, press Ctrl+Shift+D to open the default script, and add the following line at the top of the scripting file then save it.
+use "chat.jsb"
+*/
 Include "HjGlobal.jsh" ; default HJ global variables
 Include "hjconst.jsh" ; default HJ constants
 Include "common.jsm"
 include "srmm.jsh" 
 include "srmm.jsm" 
+include "UIA.jsh"
+Globals
+string chatBfr,
+object mirandaEventsX,
+object mirandaMsgCtrl,
+int toggleMirandaSpeech
 Void Function AutoStartEvent ()
-SaveCursor ()
-JAWSCursor ()
-RouteJAWSToPc ()
-JAWSPageUp ()
-JAWSEnd ()
-if StringContains (GetWord (), "max") then 
-LeftMouseButton ()
-endif 
+AutoStartEvent ()
+if StringLower (GetScriptFileName (true)) == "chat.jsb" then
+if not toggleMirandaSpeech then
+let toggleMirandaSpeech = 0
+endIf
+var object n
+let mirandaEventsX = n
+let mirandaEventsX = CreateObjectEx ("FreedomSci.UIA", false, "UIAScriptAPI.x.manifest")
+var handle hwnd = FindDescendantWindow (GetAppMainWindow (GetCurrentWindow ()), 1005)
+if hwnd then
+let mirandaMsgCtrl = mirandaEventsX.GetElementFromHandle(hwnd)
+if not mirandaEventsX.AddPropertyChangedEventHandler(UIA_ValueValuePropertyId, mirandaMsgCtrl, TreeScope_Element | TreeScope_Descendants) then
+Say ("Error: Message field not bound", 0, false)
+endIf
+if ComAttachEvents (mirandaEventsX, "UIA_Edit_", "", "", 0, 0) then
+SayFormattedMessage (ot_no_disable, GetFromLog (1))
+endIf
+endIf
+endIf
 EndFunction
-String Function GetMessageLogWindow ()
-var String MessageLogText 
-let messageLogtext = GetWindowText (FindDescendantWindow (GetRealWindow (GetFocus ()), chatLogWindow_id), false)
-return MessageLogText 
+Void Function UIA_Edit_PropertyChangedEvent (object element, string id, string value)
+var string s = GetMessageLogWindow (element)
+var string c = chatBfr
+let chatBfr = s
+StringTrimCommon (s, c, 0)
+if not StringIsBlank (s) then
+if toggleMirandaSpeech <= 1 then
+if StringLower (GetScriptFileName (true)) == "chat.jsb" then
+Say (s, 0, false)
+else
+if toggleMirandaSpeech > 0 && toggleMirandaSpeech < 2 then
+SayUsingVoice (VCTX_JAWSCURSOR, s, ot_message)
+endIf
+endIf
+endIf
+endIf
 EndFunction
-String Function GetLastMessage ()
-var  string lastmessage
-let lastMessage = GetFromLog (1)
-return lastMessage 
+String Function GetMessageLogWindow (object element)
+var object v = element.GetValuePattern()
+return v.Value
 EndFunction
 String Function GetFromLog (int MessageNumber)
-var string requestedMessage 
-let requestedMessage =  GetMessageLogWindow () 
-let requestedMessage = StringReverse (requestedMessage)
-let RequestedMessage = StringSegment (RequestedMessage, "¦", Messagenumber)
-let requestedMessage = StringReverse (requestedMessage)
-return RequestedMessage 
+return StringSegment (GetMessageLogWindow (mirandaMsgCtrl), "\r", 0 - Messagenumber)
 EndFunction
-Globals
-string mirandaMessageWas
-Void Function ReadNewMessage (handle hwnd)
-if GetControlID (hwnd) == 1005 then
-var object o, int cid, string s, string t, string n
-let o = GetObjectFromEvent (hwnd, -4, 0, cid)
-if o.accState(0) == 1048640 then
-let s = o.accValue(0)
-let t = mirandaMessageWas
-let n = s
-StringTrimCommon (n, t, 1)
-let mirandaMessageWas = s
-Say (n, 0, false)
+Script ProcessMessageSegment ()
+var string key = StringLower (GetCurrentScriptKeyName ())
+var int isShift = StringContains (key, "shift")
+var int isAlt = StringContains (key, "alt")
+var int isCtrl = StringContains (key, "ctrl")
+let key = StringReplaceSubstrings (key, "shift", "")
+let key = StringReplaceSubstrings (key, "alt", "")
+let key = StringReplaceSubstrings (key, "ctrl", "")
+let key = StringReplaceSubstrings (key, "+", "")
+var int n = StringToInt (key)
+if n == 0 then
+let n = 10
+endIf
+var string m
+if isShift then
+if isAlt then
+let m = GetFromLog (n)
+elIf isCtrl then
+let m = GetFromLog (10 + n)
+endIf
+if StringContains (m, "http") then
+var string u = stringChopLeft (m, StringContains (m, "http") - 1)
+var int i = 1
+var int l = StringLength (u)
+var string goTo
+while (i <= l)
+var string c = SubString (u, i, 1)
+if (StringIsBlank (c) || StringIsPunctuation (c)) && !StringContainsChars (c, "@#%&_-+=;:/?.") then
+let goTo = SubString (u, 1, i - 1)
+let i = l + 1
+else
+let i = i + 1
+endIf
+endWhile
+if goTo then
+CopyToClipboard (goTo)
+Say (goTo, 0, false)
+Run (goTo)
 endIf
 endIf
-EndFunction
-Void Function NewTextEvent (handle hwnd, string buffer, int nAttributes,
-int nTextColor, int nBackgroundColor, int nEcho, string sFrameName)
-if not MenusActive ()then 
-ReadNewMessage (hwnd)
-else 
-NewTextEvent(hWnd, buffer, nAttributes, nTextColor, nBackgroundColor, nEcho, sFrameName)
-EndIf 
-EndFunction
-Script sayLastMessage () 
-SayFormattedMessage (ot_no_disable, GetFromLog (1))
+else
+if isAlt then
+let m = GetFromLog (n)
+elIf isCtrl then
+let m = GetFromLog (10 + n)
+endIf
+CopyToClipboard (m)
+SayFormattedMessage (ot_no_disable, m)
+endIf
 EndScript
-Script message2 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (2))
+Script ToggleMirandaSpeech ()
+if not toggleMirandaSpeech then
+let toggleMirandaSpeech = 1
+Say ("Incoming messages will be announced no matter which window has focus.", 0, false)
+elIf toggleMirandaSpeech == 1 then
+let toggleMirandaSpeech = 2
+Say ("Incoming messages will not be announced.", 0, false)
+elIf toggleMirandaSpeech == 2 then
+let toggleMirandaSpeech = 0
+Say ("Incoming messages will be announced only when the chat window has focus.", 0, false)
+endIf
 EndScript
-
-Script message3 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (3))
-EndScript
-
-Script message4 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (4))
-EndScript
-
-Script message5 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (5))
-EndScript
-
-Script message6 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (6))
-EndScript
-
-Script message7 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (7))
-EndScript
-
-Script message8 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (8))
-EndScript
-
-Script message9 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (9))
-EndScript
-
-Script message10 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (10))
-EndScript
-
-Script message11 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (11))
-EndScript
-
-Script message12 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (12))
-EndScript
-
-Script message13 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (13))
-EndScript
-
-Script message14 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (14))
-EndScript
-
-Script message15 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (15))
-EndScript
-
-Script message16 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (16))
-EndScript
-
-Script message17 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (17))
-EndScript
-
-Script message18 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (18))
-EndScript
-Script message19 ()
-SayFormattedMessage (ot_no_disable, GetFromLog (19))
-EndScript
-
-Script message20 ()	
-SayFormattedMessage (ot_no_disable, GetFromLog (20))
-EndScript
-Int Function HandleCustomWindows ()
-if GetCurrentControlID () == MessageLogWindow_id then 
-SayString (msg_MessageLog)
-return false
-Elif   GetCurrentControlID ()  == TypingMessageWindow_id then 
-SayString (msg_TypeMessage)
-return false 
-Endif 
-
-EndFunction
-Script ScriptFileName ()
-ScriptAndAppNames (msg_ScriptName)
-EndScript
-
-
-
