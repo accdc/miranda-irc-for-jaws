@@ -6,7 +6,7 @@ Intro
 
 Archive includes the Miranda IM chat application for IRC access.
 
-This includes the JAWS Script files for the portable Miranda IRC client to enable automatic announcement of chat messages. The original scripts have been rewritten to support UIA Automation and global event binding for system wide message announcement if desired.
+This includes the JAWS Script files for the portable Miranda IRC client to enable automatic announcement of chat messages. The original scripts have been rewritten to support UI Automation (UIA) and global event binding for system wide message announcement if desired.
 
 Screen Reader Commands for JAWS
 -----
