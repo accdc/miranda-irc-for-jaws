@@ -1,0 +1,70 @@
+:script and
+:SearchRank 1
+
+:function AutoStartEvent
+:SearchRank 1
+
+:function FocusChangedEvent
+:SearchRank 1
+:Param handle/FocusWindow No Description
+:Param handle/PrevWindow No Description
+
+:function UIABindEventObjects
+:SearchRank 1
+
+:function CreateDictionaryObject
+:Returns object No Return Description
+:SearchRank 1
+:Synopsis Create a new Windows dictionary object.
+
+:function StoreInCollection
+:SearchRank 1
+:Synopsis Store new message string within the track log.
+:Param object/element/ByRef UIA element.
+:Param string/s String to store.
+:Param string/h Stringified handle to act as the instance key.
+
+:function UIA_Edit_PropertyChangedEvent
+:SearchRank 1
+:Synopsis The value property event process to be bound when the message edit field changes.
+:Param object/element/ByRef No Description
+:Param string/id No Description
+:Param string/value No Description
+
+:function GetMessageLogWindow
+:Returns string No Return Description
+:SearchRank 1
+:Synopsis Get the current value of the specified edit field.
+:Param object/element/ByRef No Description
+
+:function GetFromLog
+:Returns string No Return Description
+:SearchRank 1
+:Synopsis Get the specified message from the track log.
+:Param int/n No Description
+
+:script ProcessMessageSegmentAlt
+:SearchRank 1
+:Synopsis Read the specified message and copy it to the clipboard.
+
+:script ProcessMessageSegmentCtrl
+:SearchRank 1
+:Synopsis Read the specified message and copy it to the clipboard.
+
+:script ProcessMessageSegmentShift
+:SearchRank 1
+:Synopsis Open the url in the specified message within your default browser.
+
+:script ToggleMirandaSpeech
+:SearchRank 1
+:Synopsis Toggle between available speech modes.
+
+:script VirtualizeMsgLog
+:SearchRank 1
+:Synopsis Read the message log in the virtual buffer.
+
+:function GetHwndKey
+:Returns string
+:SearchRank 1
+:Synopsis Returns the stringified key for binding differing chat sessions.
+

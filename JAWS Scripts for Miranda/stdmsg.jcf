@@ -1,0 +1,16 @@
+[options]
+TypingEcho=0
+TypingInterrupt=0
+PhoneticCharAfterPause=0
+MSAAMode=2
+AnnounceMultilineEdit=0
+ScreenEcho=0
+[OSM]
+IncludeGraphics=1
+EditPromptSearch=0
+[WindowClasses]
+MButtonClass=Button
+[RichEdit and Edit Control Options]
+UseOSM=0
+[MSAAClasses]
+SysListView32=1
