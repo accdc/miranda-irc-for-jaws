@@ -256,3 +256,5 @@ RightShift+RightControl+7=ProcessMessageSegmentShift
 RightShift+RightControl+8=ProcessMessageSegmentShift
 RightShift+RightControl+9=ProcessMessageSegmentShift
 RightShift+RightControl+0=ProcessMessageSegmentShift
+
+Control+G=CopyMsgFieldToClipboard

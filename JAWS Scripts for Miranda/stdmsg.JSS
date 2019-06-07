@@ -1,7 +1,7 @@
 /*
-JAWS Scripts for the portable Miranda NG  IRC Client, V1.1
+JAWS Scripts for the portable Miranda NG  IRC Client, V1.2
 https://github.com/accdc/miranda-irc-for-jaws
-Rewritten by Bryan Garaventa.
+Authored by Bryan Garaventa.
 To enable global message announcement no matter which window has focus, press Ctrl+Shift+D to open the default script, and add the following line at the top of the scripting file then save it.
 use "stdmsg.jsb"
 Then press Control+S within the chat window to toggle between speech output modes.
@@ -90,8 +90,9 @@ endIf
 EndFunction
 
 Void Function UIA_Edit_PropertyChangedEvent (object ByRef element, string id, string value)
-var string h = "h" + IntToString (element.getPropertyValue(UIA_NativeWindowHandlePropertyId))
-var string s = GetMessageLogWindow (element)
+var handle hwnd = element.getPropertyValue(UIA_NativeWindowHandlePropertyId)
+var string h = "h" + IntToString (hwnd)
+var string s = GetMessageLogWindow (element, hwnd)
 var string c = mirandaObj[h + "tmp"]
 mirandaObj[h + "tmp"] = s
 if not StringIsBlank (c) 
@@ -125,9 +126,12 @@ endIf
 endIf
 EndFunction
 
-String Function GetMessageLogWindow (object ByRef element)
-var object v = element.GetValuePattern()
-return v.Value
+Function GetMessageLogWindow (object ByRef element, handle hwnd)
+var object d = GetRichEditDocument (hwnd)
+var object range = d.selection.duplicate
+range.expand(6)
+var string s = range.text
+return s
 EndFunction
 
 String Function GetFromLog (int n)
@@ -263,3 +267,13 @@ mirandaMsgCtrl = mirandaEvents.GetElementFromHandle(hwnd)
 mirandaHwndStr = "h" + IntToString (mirandaMsgCtrl.getPropertyValue(UIA_NativeWindowHandlePropertyId))
 return mirandaHwndStr
 EndFunction
+
+Script CopyMsgFieldToClipboard ()
+var handle hwnd = FindDescendantWindow (GetParent (GetFocus ()), mirandaMsgCtrlId)
+var object d = GetRichEditDocument (hwnd)
+var object range = d.selection.duplicate
+range.expand(6)
+var string s = range.text
+CopyToClipboard (s)
+Say ("The message field has been copied to the clipboard.", 0, false)
+EndScript

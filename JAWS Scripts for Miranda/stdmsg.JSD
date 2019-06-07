@@ -36,6 +36,7 @@
 :SearchRank 1
 :Synopsis Get the current value of the specified edit field.
 :Param object/element/ByRef No Description
+:Param handle/hwnd Window handle of element
 
 :function GetFromLog
 :Returns string No Return Description
@@ -64,7 +65,10 @@
 :Synopsis Read the message log in the virtual buffer.
 
 :function GetHwndKey
-:Returns string
+:Returns string No Return Description
 :SearchRank 1
 :Synopsis Returns the stringified key for binding differing chat sessions.
+
+:script CopyMsgFieldToClipboard
+:SearchRank 1
 
