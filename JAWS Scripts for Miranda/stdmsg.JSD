@@ -20,9 +20,9 @@
 :function StoreInCollection
 :SearchRank 1
 :Synopsis Store new message string within the track log.
-:Param object/element/ByRef UIA element.
-:Param string/s String to store.
-:Param string/h Stringified handle to act as the instance key.
+:Param object/element/ByRef No Description
+:Param string/s No Description
+:Param string/h No Description
 
 :function UIA_Edit_PropertyChangedEvent
 :SearchRank 1
@@ -36,7 +36,7 @@
 :SearchRank 1
 :Synopsis Get the current value of the specified edit field.
 :Param object/element/ByRef No Description
-:Param handle/hwnd Window handle of element
+:Param handle/hwnd No Description
 
 :function GetFromLog
 :Returns string No Return Description

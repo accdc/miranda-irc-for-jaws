@@ -1,5 +1,5 @@
 /*
-JAWS Scripts for the portable Miranda NG  IRC Client, V1.2
+JAWS Scripts for the portable Miranda NG  IRC Client, V1.3
 https://github.com/accdc/miranda-irc-for-jaws
 Authored by Bryan Garaventa.
 To enable global message announcement no matter which window has focus, press Ctrl+Shift+D to open the default script, and add the following line at the top of the scripting file then save it.
@@ -43,7 +43,7 @@ FocusChangedEvent (FocusWindow, PrevWindow)
 endIf
 EndFunction
 
-Function UIABindEventObjects ()
+Void Function UIABindEventObjects ()
 if !mirandaObj 
 mirandaObj = new collection
 endIf
@@ -69,7 +69,7 @@ Object Function CreateDictionaryObject ()
 return CreateObjectEx ("Scripting.Dictionary", true)
 EndFunction
 
-Function StoreInCollection (object ByRef element, string s, string h)
+Void Function StoreInCollection (object ByRef element, string s, string h)
 if not StringIsBlank (s) 
 if !mirandaObj[h + "x"] 
 mirandaObj[h + "x"] = 1
@@ -96,15 +96,7 @@ var string s = GetMessageLogWindow (element, hwnd)
 var string c = mirandaObj[h + "tmp"]
 mirandaObj[h + "tmp"] = s
 if not StringIsBlank (c) 
-var int i = 1
-var int max = StringLength (s)
-var string con = SubString (s, i, 1)
-while (StringContains (c, con) && i <= max)
-i = i + 1
-con = con + SubString (s, i, 1)
-endWhile
-con = stringChopRight (con, 1)
-s = StringDiff (s, con)
+s = StringDiff (s, c)
 endIf
 if not StringIsBlank (s) 
 StoreInCollection (element, s, h)
@@ -126,7 +118,7 @@ endIf
 endIf
 EndFunction
 
-Function GetMessageLogWindow (object ByRef element, handle hwnd)
+String Function GetMessageLogWindow (object ByRef element, handle hwnd)
 var object d = GetRichEditDocument (hwnd)
 var object range = d.selection.duplicate
 range.expand(6)
